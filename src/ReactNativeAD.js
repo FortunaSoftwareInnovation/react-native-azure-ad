@@ -1,8 +1,12 @@
 // @flow
-import React, {WebView, Dimensions, AsyncStorage} from 'react-native'
+import React, {
+  WebView, 
+  Dimensions, 
+} from 'react-native'
 import CONST from './const.js'
 import Timer from 'react-timer-mixin'
 import log from './logger'
+import AsyncStorage from '@react-native-community/async-storage'
 
 const defaultTokenUrl = "https://login.microsoftonline.com/fortunadomein.onmicrosoft.com/oauth2/v2.0/token?p=B2C_1_SignUp";
 
