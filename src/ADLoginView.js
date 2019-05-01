@@ -1,10 +1,15 @@
 // @flow
 import React, {Component} from 'react'
-import {WebView, Dimensions, AsyncStorage, Platform} from 'react-native'
+import {
+  Dimensions, 
+  AsyncStorage, 
+  Platform
+} from 'react-native'
 import CONST from './const.js'
 import ReactNativeAD from './ReactNativeAD.js'
 import Timer from 'react-timer-mixin'
 import log from './logger'
+import { WebView } from 'react-native-webview'
 
 const loginUrl = "https://login.microsoftonline.com/<tenant id>/oauth2/v2.0/authorize";
 const tokenUrl = "https://login.microsoftonline.com/common/oauth2/v2.0/token";
