@@ -101,6 +101,9 @@ export default class ADLoginView extends React.Component {
           javaScriptEnabled={true}
           domStorageEnabled={true}
           onLoadEnd={()=>{
+            if (this.props.onLoadEnd) {
+              this.props.onLoadEnd()
+            }
             if(this._needRedirect){
               this._needRedirect = false
               let tenant = this.props.context.getConfig().tenant || 'common'
@@ -159,6 +162,9 @@ export default class ADLoginView extends React.Component {
    * @param  {object} e Navigation state change event object.
    */
   _handleADToken(e:{ url:string }):any{
+    if (e.loading == true && this.props.onLoadStart) {
+      this.props.onLoadStart()
+    }
     log.verbose('ADLoginView navigate to', e.url)
     if(this._lock)
       return true
