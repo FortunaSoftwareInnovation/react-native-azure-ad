@@ -46,17 +46,19 @@ export default class ADLoginView extends React.Component {
   _accessToken : Object;
 
   constructor(props:any){
-    super(props)
-    if(!this.props.context instanceof ReactNativeAD)
-      throw new Error('property `context` of ADLoginView should be an instance of ReactNativeAD, but got', this.props.context)
-    let context = this.props.context
-    let tenant = context.getConfig().tenant
-    this._needRedirect = this.props.needLogout || false
-    this.state = {
-      page : this._getLoginUrl(tenant || 'common'),
-      visible : true,
+    super(props);
+    if(!this.props.context instanceof ReactNativeAD) {
+      throw new Error('property `context` of ADLoginView should be an instance of ReactNativeAD, but got', this.props.context);
     }
-    this._lock = false
+    let context = this.props.context;
+    let tenant = context.getConfig().tenant;
+    this._needRedirect = this.props.needLogout || false;
+    this.state = {
+      page: this._getLoginUrl(tenant || 'common'),
+      visible: true,
+    };
+    this._lock = false;
+    this.ADLoginView = React.createRef();
   }
 
   componentWillUpdate(nextProps:any, nextState:any):any {
@@ -89,7 +91,7 @@ export default class ADLoginView extends React.Component {
     let renderError = this.props.renderError || function () { }
     return (
         this.state.visible ? (<WebView
-          ref="ADLoginView"
+          ref={this.ADLoginView}
           automaticallyAdjustContentInsets={false}
           style={[this.props.style, {
             flex:1,
@@ -117,7 +119,7 @@ export default class ADLoginView extends React.Component {
             return true
           }}
           userAgent={this.props.userAgent}
-          renderError={() => renderError(this.refs.ADLoginView.reload)}
+          renderError={() => renderError(this.ADLoginView.current.reload)}
           startInLoadingState={false}
           injectedJavaScript={js}
           scalesPageToFit={true}/>) : null
