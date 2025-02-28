@@ -54,9 +54,10 @@ export default class ADLoginView extends React.Component {
       visible: true,
     }
     this._lock = false
+    this.ADLoginView = React.createRef()
   }
 
-  componentWillUpdate(nextProps: any, nextState: any): any {
+  UNSAFE_componentWillUpdate(nextProps: any, nextState: any): any {
     if (this.state.visible === nextState.visible && this.state.page === nextState.page)
       return false
     return true
@@ -68,7 +69,7 @@ export default class ADLoginView extends React.Component {
     log.debug('ADLoginView updated.')
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.props.needLogout && nextProps.needLogout) {
       let context = this.props.context
       let tenant = context.getConfig().tenant
@@ -86,7 +87,7 @@ export default class ADLoginView extends React.Component {
     let renderError = this.props.renderError || function () { }
     return (
       this.state.visible ? (<WebView
-        ref="ADLoginView"
+        ref={this.ADLoginView}
         automaticallyAdjustContentInsets={false}
         style={[this.props.style, {
           flex: 1,
@@ -107,14 +108,14 @@ export default class ADLoginView extends React.Component {
             this.setState({ page: this._getLoginUrl(tenant) })
           }
         }}
-        decelerationRate="normal"
+        decelerationRate={0.998}
         javaScriptEnabledAndroid={true}
         onNavigationStateChange={this._handleADToken.bind(this)}
         onShouldStartLoadWithRequest={(e) => {
           return true
         }}
         userAgent={this.props.userAgent}
-        renderError={() => renderError(this.refs.ADLoginView.reload)}
+        renderError={() => renderError(this.ADLoginView.current.reload)}
         startInLoadingState={false}
         injectedJavaScript={js}
         scalesPageToFit={true} />) : null
